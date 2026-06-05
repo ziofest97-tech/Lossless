@@ -50,9 +50,8 @@ jobs:
 
       - name: Checkout PR Branch
         if: github.event_name == 'pull_request_target'
-        uses: actions/checkout@v3
-        with:
-          ref: pr-branch
+        run: |
+          git checkout -f pr-branch
 
       - name: Scan Files for Malware
         if: github.event_name == 'pull_request_target'

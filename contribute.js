@@ -18,6 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const userNameEl = document.getElementById('user-name');
     
     const songInput = document.getElementById('song-input');
+    const songInputLabel = document.querySelector('label[for="song-input"]');
+    const destDirRadios = document.querySelectorAll('input[name="dest-dir"]');
     const artistInput = document.getElementById('artist-input');
     const fileInput = document.getElementById('file-input');
     const dropZone = document.getElementById('drop-zone');
@@ -119,6 +121,10 @@ document.addEventListener('DOMContentLoaded', () => {
         dropZone.style.display = 'flex';
         fileInput.value = '';
         
+        document.getElementById('type-song').checked = true;
+        songInputLabel.textContent = 'Song Title';
+        songInput.placeholder = 'e.g. Lost in Yesterday';
+        
         resetChecklist();
         updateSubmitButtonState();
     }
@@ -130,6 +136,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     dropZone.addEventListener('click', () => fileInput.click());
+    
+    destDirRadios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            if (radio.value === 'Album') {
+                songInputLabel.textContent = 'Album Title';
+                songInput.placeholder = 'e.g. The Slow Rush';
+            } else {
+                songInputLabel.textContent = 'Song Title';
+                songInput.placeholder = 'e.g. Lost in Yesterday';
+            }
+        });
+    });
     
     ['dragenter', 'dragover'].forEach(eventName => {
         dropZone.addEventListener(eventName, (e) => {
