@@ -483,13 +483,13 @@ document.addEventListener('DOMContentLoaded', () => {
             loaderIcon.style.display = 'block';
             searchTimeout = setTimeout(async () => {
                 try {
-                    const apiUrl = `https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(query)}&filter=music_songs`;
+                    const apiUrl = `https://itunes.apple.com/search?term=${encodeURIComponent(query)}&entity=song&limit=10`;
                     const res = await fetch(apiUrl);
                     if (!res.ok) throw new Error('Network response was not ok');
                     const data = await res.json();
                     
                     loaderIcon.style.display = 'none';
-                    const items = (data.items || []).slice(0, 10);
+                    const items = (data.results || []).slice(0, 10);
                     
                     if (items.length === 0) {
                         resultsContainer.innerHTML = '<p class="existing-no-results">No songs found.</p>';
@@ -498,9 +498,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     resultsContainer.innerHTML = items.map((item, idx) => {
-                        const songName = item.title || item.name || '';
-                        const artistName = item.uploaderName || item.author || (item.artists && item.artists[0] ? item.artists[0].name : 'Unknown Artist');
-                        const thumbnail = item.thumbnail || '';
+                        const songName = item.trackName || '';
+                        const artistName = item.artistName || 'Unknown Artist';
+                        const thumbnail = item.artworkUrl60 || item.artworkUrl100 || '';
                         
                         return `
                             <button type="button" class="existing-result-item" data-song="${escapeAttr(songName)}" data-artist="${escapeAttr(artistName)}">
