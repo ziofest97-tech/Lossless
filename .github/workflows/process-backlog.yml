@@ -19,6 +19,7 @@ jobs:
       - name: Wake up old PRs to trigger CI
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}   # <--- This line fixes the error!
         run: |
           BATCH_SIZE="${{ github.event.inputs.batch_size || '30' }}"
           echo "Fetching up to $BATCH_SIZE oldest open PRs..."
